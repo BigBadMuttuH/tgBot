@@ -37,18 +37,14 @@ public struct Repository
         return data;
     }
 
-    //public static int GetMaxKey()
-    //{
-    //    Console.WriteLine("max = " +  db.Keys.Max());
-    //    int max = 0;
-    //    foreach (var item in db)
-    //    {
-    //        //if (int.Parse(item.Key) > max) max = int.Parse(item.Key);
-    //        if (item.Key > max) max = item.Key;
-    //    }
+    public static int GetLastKey()
+    {
+        int lastKey = -1;
+        if (File.Exists($"{filePath}data.json"))
+            lastKey = Read().Keys.Last();
 
-    //    return max;
-    //}
+        return lastKey;
+    }
 
     public static void Save()
     {

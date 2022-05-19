@@ -13,8 +13,9 @@
             JsonParse.Init(hc.GetStringAsync(url).Result);
             List<ModellMessage> msgs = JsonParse.Parse();
 
-            int lastKey = Repository.Read().Keys.Last();
+            int lastKey = Repository.GetLastKey();
             Console.WriteLine($"last key {lastKey}");
+
             foreach (ModellMessage msg in msgs)
             {
                 //if (int.Parse(msg.message_id) > max
