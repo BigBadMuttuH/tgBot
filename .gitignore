@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 # token
 token
+data.json

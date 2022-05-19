@@ -1,7 +1,8 @@
 ﻿public struct ModellMessage
 {
     public string? chat_id;
-    public string? message_id;
+    public int message_id;
+    //public string? message_id;
     public string? update_id;
     public string? text;
 

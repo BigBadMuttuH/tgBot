@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-string filePath = @"D:\_CODING_\CSharp\BigBadMuutuh_bot\tgBot\tgBot\";
-
-string token = File.ReadAllText($"{filePath}token");
+﻿Console.WriteLine($"load token");
+string token = File.ReadAllText($"{Repository.filePath}token");
 
 Repository.Load();
 

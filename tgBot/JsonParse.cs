@@ -25,7 +25,8 @@ public struct JsonParse
             ModellMessage mm = new();
             mm.update_id = msg["update_id"]?.ToString();
             mm.chat_id = msg["channel_post"]?["sender_chat"]?["id"]?.ToString();
-            mm.message_id = msg["channel_post"]?["message_id"]?.ToString();
+            //mm.message_id = msg["channel_post"]?["message_id"]?.ToString();
+            mm.message_id = int.Parse(msg["channel_post"]?["message_id"]?.ToString());
             mm.text = msg["channel_post"]?["text"]?.ToString();
 
             messagers.Add(mm);

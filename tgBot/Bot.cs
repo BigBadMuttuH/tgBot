@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public struct Bot
+﻿public struct Bot
 {
     static string token;
     static string baseUri;
@@ -19,31 +13,34 @@ public struct Bot
             JsonParse.Init(hc.GetStringAsync(url).Result);
             List<ModellMessage> msgs = JsonParse.Parse();
 
-            Repository.Load();
-
+            int lastKey = Repository.Read().Keys.Last();
+            Console.WriteLine($"last key {lastKey}");
             foreach (ModellMessage msg in msgs)
             {
-                int max = Repository.GetMaxKey();
-                if (int.Parse(msg.message_id) > max
+                //if (int.Parse(msg.message_id) > max
+                int id = (int)msg.message_id;
+
+                if (id > lastKey
                     &&
                     msg.text == "/coube")
                 {
                     SendMessage(msg.chat_id, "https://coub.com/random");
                 }
 
-                if (msg.message_id != null
-                    && !Repository.Read().ContainsKey(msg.message_id))
+                if (id != null
+                    && !Repository.Read().ContainsKey(id))
                 {
                     Repository.Append(msg);
                 }
 
-                Thread.Sleep(600);
+                Thread.Sleep(900);
             }
             Console.WriteLine(Repository.GetString());
             //break;
 
             Thread.Sleep(6000);
             Repository.Save();
+            Thread.Sleep(6000);
             Console.Clear();
         }
 
@@ -60,7 +57,7 @@ public struct Bot
         token = publicToken;
         baseUri = $"https://api.telegram.org/bot{token}/";
     }
-    
+
     public static void SendMessage(string chat_id, string text)
     {
         string url = $"{baseUri}sendMessage?chat_id={chat_id}" +

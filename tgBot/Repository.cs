@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 
 public struct Repository
 {
-    static Dictionary<string, List<ModellMessage>> db = new();
+    //static Dictionary<string, List<ModellMessage>> db = new();
+    static Dictionary<int, List<ModellMessage>> db = new();
 
-    public static string filePath = @"D:\_CODING_\CSharp\BigBadMuutuh_bot\tgBot\tgBot\Repository\data.json";
+    public static string filePath = @"D:\_CODING_\CSharp\BigBadMuutuh_bot\tgBot\tgBot\Repository\";
 
     public static void Append(ModellMessage model)
     {
@@ -21,7 +21,8 @@ public struct Repository
         }
     }
 
-    public static Dictionary<string, List<ModellMessage>> Read()
+    //public static Dictionary<string, List<ModellMessage>> Read()
+    public static Dictionary<int, List<ModellMessage>> Read()
     {
         return db;
     }
@@ -36,29 +37,33 @@ public struct Repository
         return data;
     }
 
-    public static int GetMaxKey()
-    {
-        int max = 0;
-        foreach (var item in db)
-        {
-            if (int.Parse(item.Key) > max) max = int.Parse(item.Key);
-        }
+    //public static int GetMaxKey()
+    //{
+    //    Console.WriteLine("max = " +  db.Keys.Max());
+    //    int max = 0;
+    //    foreach (var item in db)
+    //    {
+    //        //if (int.Parse(item.Key) > max) max = int.Parse(item.Key);
+    //        if (item.Key > max) max = item.Key;
+    //    }
 
-        return max;
-    }
+    //    return max;
+    //}
 
     public static void Save()
     {
-        File.WriteAllText(filePath, Newtonsoft.Json.JsonConvert.SerializeObject(db));
+        Console.WriteLine($"save file: data.json");
+        File.WriteAllText(@$"{filePath}data.json", JsonConvert.SerializeObject(db));
     }
 
     public static void Load()
     {
-        if (File.Exists(filePath))
+        if (File.Exists($"{filePath}data.json"))
         {
-            string tmp = File.ReadAllText(filePath);
-            db = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, List<ModellMessage>>>(tmp);    
-
+            Console.WriteLine($"load file: data.json");
+            string tmp = File.ReadAllText($"{filePath}data.json");
+            //db = JsonConvert.DeserializeObject<Dictionary<string, List<ModellMessage>>>(tmp);
+            db = JsonConvert.DeserializeObject<Dictionary<int, List<ModellMessage>>>(tmp);
         }
     }
 }
