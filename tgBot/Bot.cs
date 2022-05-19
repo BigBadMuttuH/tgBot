@@ -10,35 +10,49 @@ public struct Bot
     static string baseUri;
 
     static HttpClient hc = new HttpClient();
-    //string url = $"https://api.telegram.org/bot{token}/getUpdates";
 
-    //string json = hc.GetStringAsync(url).Result;
-    //JsonParse.Init(json);
-
-    public static void Start()
+    public static void BotThread()
     {
-
         while (true)
         {
             string url = $"{baseUri}getUpdates";
             JsonParse.Init(hc.GetStringAsync(url).Result);
             List<ModellMessage> msgs = JsonParse.Parse();
 
-            for (int i = 0; i < msgs.Count; i++)
-            {
-                Console.WriteLine(ModellMessage.ToString(msgs[i]));
-                // эхо бот
-                //if(!String.IsNullOrEmpty(msgs[i].chat_id)
-                //    && !String.IsNullOrEmpty(msgs[i].text))
-                if(msgs[i].text == "/coube")
-                {
-                    SendMessage(msgs[i].chat_id, "https://coub.com/random");
-                }
-                Thread.Sleep(60);
-            }
+            Repository.Load();
 
-            Thread.Sleep(5000);
+            foreach (ModellMessage msg in msgs)
+            {
+                int max = Repository.GetMaxKey();
+                if (int.Parse(msg.message_id) > max
+                    &&
+                    msg.text == "/coube")
+                {
+                    SendMessage(msg.chat_id, "https://coub.com/random");
+                }
+
+                if (msg.message_id != null
+                    && !Repository.Read().ContainsKey(msg.message_id))
+                {
+                    Repository.Append(msg);
+                }
+
+                Thread.Sleep(600);
+            }
+            Console.WriteLine(Repository.GetString());
+            //break;
+
+            Thread.Sleep(6000);
+            Repository.Save();
+            Console.Clear();
         }
+
+    }
+
+    public static void Start()
+    {
+        Thread t = new Thread(new ThreadStart(BotThread));
+        t.Start();
     }
 
     public static void Init(string publicToken)
@@ -46,7 +60,6 @@ public struct Bot
         token = publicToken;
         baseUri = $"https://api.telegram.org/bot{token}/";
     }
-
     
     public static void SendMessage(string chat_id, string text)
     {
