@@ -2,8 +2,6 @@
 string token = File.ReadAllText($"{Repository.filePath}token");
 
 Repository.Load();
-
 Bot.Init(token);
-Bot.Start();
 
-//Console.ReadKey();
+Bot.Start();
