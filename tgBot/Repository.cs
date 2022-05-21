@@ -6,7 +6,8 @@ public struct Repository
     //static Dictionary<string, List<ModellMessage>> db = new();
     static Dictionary<int, List<ModellMessage>> db = new();
 
-    public static string filePath = @"D:\_CODING_\CSharp\BigBadMuutuh_bot\tgBot\tgBot\Repository\";
+    //public static string filePath = @"D:\_CODING_\CSharp\BigBadMuutuh_bot\tgBot\tgBot\Repository\";
+    public static string filePath = @".\Repository\";
 
     public static void Append(ModellMessage model)
     {
